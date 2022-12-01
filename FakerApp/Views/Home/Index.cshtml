@@ -1,0 +1,215 @@
+﻿@*@model IEnumerable<FakeUser>*@
+@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    var NumberOfResults = 0;
+    if(Model.FakeUsers != null)
+    {
+        NumberOfResults = Model.FakeUsers.Count();
+    }
+}
+
+<h2>Filters: </h2>
+<form asp-controller="home" asp-action="index" method="get">
+    <label for="country1">Country 1</label><span style="color: red !important; display: inline; float: none;">*</span>
+    <select asp-for="CountryOne" class="form-control term">
+    @Html.Partial("_CountriesSelect")
+    </select>
+
+    <label for="country2">Country 2</label><span style="color: red !important; display: inline; float: none;">*</span>
+    <select asp-for="CountryTwo" class="form-control term">
+    @Html.Partial("_CountriesSelect")
+    </select>
+
+    <label for="country3">Country 3</label><span style="color: red !important; display: inline; float: none;">*</span>
+    <select asp-for="CountryThree" class="form-control term">
+    @Html.Partial("_CountriesSelect")
+    </select>
+
+    <input hidden name="NumberOfResults" value="@NumberOfResults"/>
+ 
+    <label for="country2">Error Frequency</label><span style="color: red !important; display: inline; float: none;">*</span>
+    <select asp-for="ErrorQuantity" class="form-control">
+        <option selected="selected" value="0">No Error</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+    </select>
+    <button type="submit" class="btn btn-info mt-3">Random</button>
+</form>
+
+
+
+
+@*@{
+    if(Model.FakeUsers != null)
+    {
+        var languages = new String[@Model.CountryOne, Model.CountryTwo, Model.CountryThree];
+    }
+}*@
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 left-side-sidebar">
+            <div class="row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <div class="small-search-wrap">
+                        <div class="search-form">
+                            @*<form action="#">
+                                <div class="form-group">
+                                    <input type="text" value="test" placeholder="Search something here" maxlength="100" class="form-control" name="name" id="name">
+                                </div>
+                            </form>*@
+                        </div>
+                    </div>
+                    <hr class="invisible small">
+                </div>
+                <div class="col-md-12">
+                    <div class="v-heading-v2">
+                        <h4 class="v-search-result-count">@NumberOfResults results</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix mt-40">
+                <ul class="xsearch-items">
+
+                    @if (Model.FakeUsers != null)
+                    {
+                        @if(Model.ErrorQuantity != 0 && Model.ErrorQuantity > 0)
+                        {
+                            @foreach (var user in Model.FakeUsers)
+                            {
+                                <li class="search-item">
+                                    <div class="search-item-content">
+                                        <h5>Id: @user.Id</h5>
+                                        <h5>Identifier: @user.Identifier</h5>
+                                        <h3 class="search-item-caption"><a href="#">@user.Name!!!!</a></h3>
+
+                                        <div class="search-item-meta mb-15">
+                                            <ul class="list-inline">
+                                                <li class="pr-0">Country: @user.Country!!!!</li>
+                                                <li class="pr-0">City: @user.City!!!!</li>
+                                                <li class="pr-0">Street: @user.Street!!!!</li>
+                                                <li class="pl-0"><a href="#">House: @user.House!!!!</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            Phone Number: @user.Phone
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            @foreach (var user in Model.FakeUsers)
+                            {
+                                <li class="search-item">
+                                    <div class="search-item-content">
+                                        <h5>Id: @user.Id</h5>
+                                        <h5>Identifier: @user.Identifier</h5>
+                                        <h3 class="search-item-caption"><a href="#">@user.Name</a></h3>
+
+                                        <div class="search-item-meta mb-15">
+                                            <ul class="list-inline">
+                                                <li class="pr-0">Country: @user.Country</li>
+                                                <li class="pr-0">City: @user.City</li>
+                                                <li class="pr-0">Street: @user.Street</li>
+                                                <li class="pl-0"><a href="#">House: @user.House</a></li>
+                                            </ul>
+                                        </div>
+                                        <div>
+                                            Phone Number: @user.Phone
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+            @if(Model.FakeUsers != null)
+            {
+                @if(Model.FakeUsers.Count() > 10)
+                {
+                    <form asp-controller="home" asp-action="index" method="get">
+                        <input hidden asp-for="LoadNumber" name="loadNumber" value="10"/>
+                        <input hidden asp-for="NumberOfResults" name="NumberOfResults" value="@NumberOfResults" />
+                        <input hidden asp-for="CountryOne" />
+                        <input hidden asp-for="CountryTwo"/>
+                        <input hidden asp-for="CountryThree"/>
+                        <button type="submit" class="btn btn-info">10 more</button>
+                    </form>
+                }
+            }
+
+            @*<div class="row">
+                <div class="col-md-6">
+                    <div class="clearfix pl-90">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-double-left"></i> </a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">..</a></li>
+                            <li class="page-item"><a class="page-link" href="#">20</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="fa fa-angle-double-right"></i> </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="clearfix pull-right">
+                        <span class="o-7">Page 1 of 8</span>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        let selItems = JSON.parse(sessionStorage.getItem("SelItem")) || [];
+        $(function() {
+          if (selItems) {
+            selItems.forEach(obj => {
+              const [k, v] = Object.entries(obj)[0]
+              $("#" + k).val(v)
+            })
+          }
+          $('.term').on("change", function() {
+            selItems = $('.term').map(function() {
+              return { [this.id]: this.value }
+            }).get();
+          sessionStorage.setItem("SelItem", JSON.stringify(selItems))
+
+          });
+        });
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            var scrollpos = localStorage.getItem('scrollpos');
+            if (scrollpos) window.scrollTo(0, scrollpos);
+        });
+
+        window.onbeforeunload = function (e) {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+    </script>
+
+}
+
